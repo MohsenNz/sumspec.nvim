@@ -27,7 +27,19 @@ syntax match sumspecType '\<\u\w*'
 syntax match sumspecVariant '\.\s*\zs\u\w*'
 syntax match sumspecEvent '^\l\w*'
 syntax match sumspecNaming '#\l\w*'
-syntax match sumspecAnnotation '@\l\w*'
+" An annotation's arguments are opaque text (grammar: ARGUMENTS): dimmed,
+" up to the end of the line, a comment, or, outside brackets, one of
+" @ = | * :: or an unmatched closing bracket. Brackets nest and may span
+" lines; a string is one unit.
+syntax match sumspecAnnotation '@\l\w*' nextgroup=sumspecAnnotationArgs skipwhite
+syntax region sumspecAnnotationArgs contained
+      \ start='\%([@=|*)\]}]\|::\|--\)\@!\S'
+      \ end='$' end='\ze--' end='\ze\%([@=|*)\]}]\|::\)'
+      \ contains=sumspecArgBrackets,sumspecArgString
+syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs start='(' end=')' contains=sumspecArgBrackets,sumspecArgString,sumspecComment
+syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs start='\[' end=']' contains=sumspecArgBrackets,sumspecArgString,sumspecComment
+syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs start='{' end='}' contains=sumspecArgBrackets,sumspecArgString,sumspecComment
+syntax region sumspecArgString contained start=+"+ end=+"+ oneline
 
 " __atomics, __events, __annotations, __init, __version, __int, ...
 syntax match sumspecKeyword '\<__\a\w*'
@@ -58,6 +70,9 @@ highlight default link sumspecNumber Number
 highlight default link sumspecString String
 highlight default link sumspecOperator Operator
 highlight default link sumspecGuard Comment
+highlight default link sumspecAnnotationArgs Comment
+highlight default link sumspecArgBrackets sumspecAnnotationArgs
+highlight default link sumspecArgString sumspecAnnotationArgs
 highlight default link sumspecComment Comment
 highlight default link sumspecTodo Todo
 

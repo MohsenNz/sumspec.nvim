@@ -85,10 +85,15 @@ vim.api.nvim_set_hl(0, "@lsp.type.event.sumspec", { link = "Title" })
 A guard (`// ...` up to its `->`) is dimmed, so the source and target
 stand out: its names, values and operators take the group
 `sumspecGuard`, linked to `Comment`; its `//` and its words (`not`,
-`and`, `or`, `in`) keep their colours. To change it:
+`and`, `or`, `in`) keep their colours. The arguments of an annotation
+(`@effect snackbar "Saved"`) are opaque text, so they are dimmed too,
+as the group `sumspecAnnotationArgs`, also linked to `Comment`; the
+`@name` keeps its colour. The server sends no tokens for them, so this
+needs a `sumspec` that has that change. To change either:
 
 ```lua
 vim.api.nvim_set_hl(0, "sumspecGuard", { link = "NonText" })
+vim.api.nvim_set_hl(0, "sumspecAnnotationArgs", { link = "NonText" })
 ```
 
 ## Keeping in sync
