@@ -10,7 +10,12 @@ setlocal comments=:--
 " Comments name types such as FileState: check each part of the word.
 setlocal spelloptions+=camel
 
+" The server's tokens are drawn over the syntax colours: dim the ones
+" inside a guard again after each token update.
+lua require('sumspec.guard').attach(0)
+
 let b:undo_ftplugin = 'setlocal commentstring< comments< spelloptions<'
+      \ . ' | exe "lua require(''sumspec.guard'').detach(0)"'
 
 " Colours for the language server's semantic tokens. Neovim names a
 " token's group @lsp.type.<type>.<filetype>; without these, many colour

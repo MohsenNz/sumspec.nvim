@@ -82,6 +82,15 @@ so your colour scheme or a `:highlight` command can set them instead:
 vim.api.nvim_set_hl(0, "@lsp.type.event.sumspec", { link = "Title" })
 ```
 
+A guard (`// ...` up to its `->`) is dimmed, so the source and target
+stand out: its names, values and operators take the group
+`sumspecGuard`, linked to `Comment`; its `//` and its words (`not`,
+`and`, `or`, `in`) keep their colours. To change it:
+
+```lua
+vim.api.nvim_set_hl(0, "sumspecGuard", { link = "NonText" })
+```
+
 ## Keeping in sync
 
 `syntax/sumspec.vim` follows the grammar in the sumspec repository

@@ -35,6 +35,11 @@ syntax region sumspecString start=+"+ end=+"+ oneline
 
 syntax match sumspecOperator '::\|->\|=>\|//\|==\|!=\|<=\|>=\|[-|*+=<>/'']'
 
+" A guard, from // up to its ->: dimmed, so the source and target stand
+" out. Its words and a comment keep their colours. A blank line ends a
+" guard with no -> (a parse error).
+syntax region sumspecGuard matchgroup=sumspecOperator start='//' end='\ze->' end='^\s*$' keepend contains=sumspecKeyword,sumspecComment
+
 " Last, so that -- wins over the - operator.
 syntax keyword sumspecTodo TODO FIXME XXX contained
 syntax match sumspecComment '--.*$' contains=@Spell,sumspecTodo
@@ -48,6 +53,7 @@ highlight default link sumspecKeyword Keyword
 highlight default link sumspecNumber Number
 highlight default link sumspecString String
 highlight default link sumspecOperator Operator
+highlight default link sumspecGuard Comment
 highlight default link sumspecComment Comment
 highlight default link sumspecTodo Todo
 
