@@ -14,6 +14,10 @@ endif
 
 syntax case match
 
+" A guard can span lines: parse from the start so a line inside one knows
+" it is. Specs are small, so this is cheap.
+syntax sync fromstart
+
 " Spell-check comments only, not names like FileState or checkoutCommit.
 syntax spell notoplevel
 
