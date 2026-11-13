@@ -43,8 +43,8 @@ syntax region sumspecArgString contained start=+"+ end=+"+ oneline
 
 " __atomics, __events, __annotations, __init, __version, __int, ...
 syntax match sumspecKeyword '\<__\a\w*'
-" Words only in a guard or a list type.
-syntax keyword sumspecKeyword by not and or in
+" Words only in a guard, a list type or an element path (L[each #x in xs]).
+syntax keyword sumspecKeyword by not and or in each
 
 syntax match sumspecNumber '\<\d\+\%(\.\d\+\)\=\>'
 syntax region sumspecString start=+"+ end=+"+ oneline
