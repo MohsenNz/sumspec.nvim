@@ -27,6 +27,13 @@ syntax match sumspecType '\<\u\w*'
 syntax match sumspecVariant '\.\s*\zs\u\w*'
 syntax match sumspecEvent '^\l\w*'
 syntax match sumspecNaming '#\l\w*'
+" A qualified name, core.Todos or core.toggleTodo: a name of the base
+" spec imported as core (__imports { core "file" }). Defined after the names
+" above, so it wins where it starts.
+syntax match sumspecQualified '\<\l\w*\.\a\w*' contains=sumspecQualifier,sumspecQualifiedType,sumspecQualifiedEvent
+syntax match sumspecQualifier contained '\<\l\w*\ze\.'
+syntax match sumspecQualifiedType contained '\.\zs\u\w*'
+syntax match sumspecQualifiedEvent contained '\.\zs\l\w*'
 " An annotation's arguments are opaque text (grammar: ARGUMENTS): dimmed,
 " up to the end of the line, a comment, or, outside brackets, one of
 " @ = | * :: or an unmatched closing bracket. Brackets nest and may span
@@ -41,7 +48,7 @@ syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs star
 syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs start='{' end='}' contains=sumspecArgBrackets,sumspecArgString,sumspecComment
 syntax region sumspecArgString contained start=+"+ end=+"+ oneline
 
-" __atomics, __events, __annotations, __init, __version, __int, ...
+" __atomics, __events, __annotations, __imports, __init, __version, ...
 syntax match sumspecKeyword '\<__\a\w*'
 " Words only in a guard, a list type or an element path (L[each #x in xs]).
 syntax keyword sumspecKeyword by not and or in each
@@ -49,7 +56,7 @@ syntax keyword sumspecKeyword by not and or in each
 syntax match sumspecNumber '\<\d\+\%(\.\d\+\)\=\>'
 syntax region sumspecString start=+"+ end=+"+ oneline
 
-syntax match sumspecOperator '::\|->\|=>\|//\|==\|!=\|<=\|>=\|[-|*+=<>/'']'
+syntax match sumspecOperator '::\|->\|=>\|//\|>>\|==\|!=\|<=\|>=\|[-|*+=<>/'']'
 
 " A guard, from // up to its ->: dimmed, so the source and target stand
 " out. Its words and a comment keep their colours. A blank line ends a
@@ -64,6 +71,9 @@ highlight default link sumspecType Type
 highlight default link sumspecVariant Constant
 highlight default link sumspecEvent Function
 highlight default link sumspecNaming Identifier
+highlight default link sumspecQualifier Include
+highlight default link sumspecQualifiedType sumspecType
+highlight default link sumspecQualifiedEvent sumspecEvent
 highlight default link sumspecAnnotation PreProc
 highlight default link sumspecKeyword Keyword
 highlight default link sumspecNumber Number
