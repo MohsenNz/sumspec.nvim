@@ -48,7 +48,7 @@ syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs star
 syntax region sumspecArgBrackets contained matchgroup=sumspecAnnotationArgs start='{' end='}' contains=sumspecArgBrackets,sumspecArgString,sumspecComment
 syntax region sumspecArgString contained start=+"+ end=+"+ oneline
 
-" __atomics, __events, __annotations, __imports, __init, __version, ...
+" __atomics, __events, __annotations, __imports, __init, __pattern, __version, ...
 syntax match sumspecKeyword '\<__\a\w*'
 " Words only in a guard, a list type or an element path (L[each #x in xs]).
 syntax keyword sumspecKeyword by not and or in each
@@ -56,7 +56,8 @@ syntax keyword sumspecKeyword by not and or in each
 syntax match sumspecNumber '\<\d\+\%(\.\d\+\)\=\>'
 syntax region sumspecString start=+"+ end=+"+ oneline
 
-syntax match sumspecOperator '::\|->\|=>\|//\|>>\|==\|!=\|<=\|>=\|[-|*+=<>/'']'
+" A comma separates the arguments of a named pattern: Selected(at, x).
+syntax match sumspecOperator '::\|->\|=>\|//\|>>\|==\|!=\|<=\|>=\|[-|*+=<>/,'']'
 
 " A guard, from // up to its ->: dimmed, so the source and target stand
 " out. Its words and a comment keep their colours. A blank line ends a
